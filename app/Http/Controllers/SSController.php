@@ -42,8 +42,7 @@ class SSController extends Controller
       return view('csv');
     }
 
-    public function import(Request $request)
-    {
+    public function import(Request $request) {
       if($request->file('imported-file'))
       {
           $path = $request->file('imported-file')->getRealPath();
@@ -72,12 +71,12 @@ class SSController extends Controller
       } catch(\Exception $e){
           return Redirect::back()->withErrors([$e.' terdapat kesalahan format file, pastikan format file sudah benar!']);
       }
+      }
+      return Redirect::back()->withErrors(['terdapat kesalahan, pastikan format file sudah benar!']);
     }
-    return Redirect::back()->withErrors(['terdapat kesalahan, pastikan format file sudah benar!']);
-  }
 
-  //tanpa nge cek npm, langsung hitamkan foto yg di folder
-  public function resize() {
+    //tanpa nge cek npm, langsung hitamkan foto yg di folder
+    public function resize() {
     $pengaturan = DB::table('folder')->where('id','=','1')->get()->first();
     $dirfotonya = public_path('png');
     $fotoArray = scandir($dirfotonya,1);
@@ -158,5 +157,11 @@ class SSController extends Controller
       //tutup foreach 1
       }
       //tutup fungsi proses
+    }
+
+    public function export(Request $request){
+      $npmRequest = $request->npm;
+      $npmArray = explode(",",$npmRequest);
+      Excel::loadView('result', array('npmArray' => $npmArray))->export('xls');
     }
 }

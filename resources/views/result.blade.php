@@ -1,40 +1,41 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Foto Wisuda Tools by c3budiman</title>
-  </head>
-  <body>
-
     <table>
       <tr>
-        <th>NPM</th>
-        <th>Nama</th>
-        <th>Fakultas</th>
-        <th>Tanggal Sidang</th>
-        <th>Tanggal Lulus</th>
+        <td>NPM</td>
+        <td>Nama</td>
+        <td>TGL_LULUS</td>
+        <td>TGL_LAHIR</td>
+        <td>TMP_LAHIR</td>
+        <td>ALAMAT1</td>
+        <td>ALAMAT2</td>
+        <td>RT</td>
+        <td>RW</td>
+        <td>KOTA</td>
+        <td>KODE_POS</td>
+        <td>TELEPON</td>
+        <td>EMAIL</td>
       </tr>
       <?php
       foreach ($npmArray as $npmDicari) {
         if ($npmDicari == "") {
           continue;
         }
-        $nama = DB::table('dbf')->where('NPM','=',$npmDicari)->get()->first()->NAMA;
-        $fakultas = DB::table('dbf')->where('NPM','=',$npmDicari)->get()->first()->FAKULTAS;
-        $tgl_sidang = DB::table('dbf')->where('NPM','=',$npmDicari)->get()->first()->TGL_SIDANG;
-        $tgl_lulus = DB::table('dbf')->where('NPM','=',$npmDicari)->get()->first()->TGL_LULUS;
         ?>
         <tr>
-          <td>{{$npmDicari}}</td>
-          <td>{{$nama}}</td>
-          <td>{{$fakultas}}</td>
-          <td>{{$tgl_sidang}}</td>
-          <td>{{$tgl_lulus}}</td>
+          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->NPM}}</td>
+          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->NAMA}}</td>
+          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->TGL_LULUS}}</td>
+          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->TGL_LAHIR}}</td>
+          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->TEMPAT_LAHIR}}</td>
+          <td>{{substr(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->JALAN,0,30)}}</td>
+          <td>{{substr(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->JALAN,31)}}</td>
+          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->RT}}</td>
+          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->RW}}</td>
+          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->KOTA}}</td>
+          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->KODEPOS}}</td>
+          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->HP}}</td>
+          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->EMAIL}}</td>
         </tr>
         <?php
       }
        ?>
     </table>
-
-  </body>
-</html>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Excel;
+use DB;
 
 class DBFController extends Controller
 {
@@ -10,10 +12,15 @@ class DBFController extends Controller
     return view('dbfDataIndex');
   }
 
-  public function Cari(Request $request) {
+  public function Cari(Request $request){
     $npmRequest = $request->npm;
     $npmArray = explode(",",$npmRequest);
-    return view('result', ['npmArray'=>$npmArray]);
+
+    Excel::create('Ganti Nama jadi Fakultas nya', function($excel) use ($npmArray) {
+    $excel->sheet('Fakultas Here', function($sheet) use ($npmArray) {
+        $sheet->loadView('result')->with('npmArray',$npmArray);
+        });
+    })->download('xls');;
   }
 
   public function GetTranspose() {
