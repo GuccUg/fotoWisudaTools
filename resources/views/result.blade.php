@@ -42,7 +42,7 @@
           <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->KOTA}}</td>
           <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->KODEPOS}}</td>
           <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->HP}}</td>
-          @if (DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->EMAIL)
+          @if (DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->EMAIL != '')
             <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->EMAIL}}</td>
           @else
             <td>{{substr($matches[0][1],1,strlen($matches[0][1])-2)."@student.gunadarma.ac.id"}}</td>
