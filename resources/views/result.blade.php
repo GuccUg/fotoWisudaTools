@@ -1,7 +1,7 @@
     <table>
       <tr>
         <td>NPM</td>
-        <td>Nama</td>
+        <td>NAMA</td>
         <td>TGL_LULUS</td>
         <td>TGL_LAHIR</td>
         <td>TMP_LAHIR</td>
@@ -15,6 +15,7 @@
         <td>EMAIL</td>
       </tr>
       <?php
+      use Carbon\Carbon;
       foreach ($npmArray as $npmDicari) {
         if ($npmDicari == "") {
           continue;
@@ -30,16 +31,16 @@
     		preg_match_all($re, $response, $matches, PREG_SET_ORDER, 0);
         ?>
         <tr>
-          <td>{{$npmDicari}}</td>
-          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->NAMA}}</td>
-          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->TGL_LULUS}}</td>
-          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->TGL_LAHIR}}</td>
-          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->TEMPAT_LAHIR}}</td>
-          <td>{{substr(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->JALAN,0,30)}}</td>
-          <td>{{substr(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->JALAN,30)}}</td>
+          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->NPM}}</td>
+          <td>{{ucwords(strtolower(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->NAMA))}}</td>
+          <td>{{Carbon::parse(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->TGL_LULUS)->format('d/m/Y')}}</td>
+          <td>{{Carbon::parse(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->TGL_LAHIR)->format('d/m/Y')}}</td>
+          <td>{{ucfirst(strtolower(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->TEMPAT_LAHIR))}}</td>
+          <td>{{strtolower(substr(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->JALAN,0,30))}}</td>
+          <td>{{strtolower(substr(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->JALAN,30))}}</td>
           <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->RT}}</td>
           <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->RW}}</td>
-          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->KOTA}}</td>
+          <td>{{ucfirst(strtolower(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->KOTA))}}</td>
           <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->KODEPOS}}</td>
           <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->HP}}</td>
           @if (DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->EMAIL != '')
