@@ -50,7 +50,11 @@
                die(curl_error($ch));
              } else {
                ?>
-               <td>{{substr($matches[0][1],1,strlen($matches[0][1])-2)."@student.gunadarma.ac.id"}}</td>
+               @if (empty($matches))
+                 <td></td>
+               @else
+                 <td>{{substr($matches[0][1],1,strlen($matches[0][1])-2)."@student.gunadarma.ac.id"}}</td>
+               @endif
                <?php
              }
             curl_close($ch);
