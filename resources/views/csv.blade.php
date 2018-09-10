@@ -13,6 +13,7 @@
         <a class="btn btn-primary" href="/fotograyscale">Checker and Grayscale</a>
         <a style="" class="btn btn-warning" href="/matcher">Count And List Missing</a>
         <a style="" class="btn btn-success" href="/datadbf">Data DBF Getter</a>
+        <a class="btn btn-primary" href="/ssdownloader">Foto Downloader</a>
       </div>
       <div class="row">
         <h1 class="page-header">Database Wisudawan <small>by c3budiman</small></h1>

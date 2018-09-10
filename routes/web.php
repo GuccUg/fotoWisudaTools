@@ -8,6 +8,8 @@ Route::get('/', function () {
 Route::get('/fotograyscale', function () {
     return view('FotoGrayscale');
 });
+
+Route::get('/downloadcsvygkurang', 'direktoriController@getYangNoFoto');
 Route::post('/fotograyscale', 'direktoriController@proses');
 
 //fungsi penghitung berapa foto yg still missing

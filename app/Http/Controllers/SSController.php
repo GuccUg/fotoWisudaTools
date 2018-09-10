@@ -20,21 +20,47 @@ class SSController extends Controller
 
     public function ProsesDownload(Request $request) {
         $pengaturan = DB::table('folder')->where('id','=','1')->get()->first();
+        //download dulu di akademik, kalo ga ada nanti di ss :
         $password = $pengaturan->PasswordSCP;
         if (!empty($password) && $password == "") {
           $password = $request->password;
         }
         $npmRequest = $request->npm;
         $npmArray = explode(",",$npmRequest);
-
         foreach ($npmArray as $npm) {
-          $ssh = new SSH2('studentsite.gunadarma.ac.id',143);
-          if (!$ssh->login('student', $password)) {
-              exit('Password Salah!');
+        $url = 'http://akademik.gunadarma.ac.id/jurusan/akademik_foto.ashx?npm='.$npm.'&file=c:\inetpub\wwwroot\jurusan\app.ini&default=c:\inetpub\wwwroot\jurusan\media\foto_default.jpg';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$url);
+        // don't download content check dlu file nya ada atau ngga
+        curl_setopt($ch, CURLOPT_NOBODY, 1);
+        curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        if($result !== FALSE)
+        {
+          if (@getimagesize($url)[3] !== 'width="64" height="80"') {
+            //kalo ada download, ga ada ke bawah...
+            $ch = curl_init($url);
+            $fp = fopen(public_path($pengaturan->FolderDownload.'/'.$npm.'.jpg'), 'wb');
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_exec($ch);
+            curl_close($ch);
+            fclose($fp);
           }
-          $scp = new SCP($ssh);
-          $scp->get('/home/student/foto/'.$npm.'.jpg', public_path($pengaturan->FolderDownload.'/'.$npm.'.jpg'));
         }
+        else
+        {
+          //klo ga ada di akademik download di ss :
+            $ssh = new SSH2('studentsite.gunadarma.ac.id',143);
+            if (!$ssh->login('student', $password)) {
+                exit('Password Salah!');
+            }
+            $scp = new SCP($ssh);
+            $scp->get('/home/student/foto/'.$npm.'.jpg', public_path($pengaturan->FolderDownload.'/'.$npm.'.jpg'));
+        }
+      }
         return redirect('ssdownloader')->with('status', 'Foto Berhasil Di Download, Jika ada....');
     }
 

@@ -13,6 +13,7 @@
         <a class="btn btn-primary" href="/fotograyscale">Checker and Grayscale</a>
         <a style="" class="btn btn-warning" href="/matcher">Count And List Missing</a>
         <a style="" class="btn btn-success" href="/datadbf">Data DBF Getter</a>
+        <a class="btn btn-primary" href="/ssdownloader">Foto Downloader</a>
       </div>
       <div class="row">
         <h1 class="page-header">SS Downloader <small>by c3budiman</small></h1>
@@ -31,7 +32,7 @@
             {{ csrf_field() }}
             <label for="">Masukkan NPM yg ingin di download : </label>
             <br>
-            <textarea class="form-control" name="npm" rows="8" cols="80" placeholder="ex:11115442,10115810"></textarea>
+            <textarea class="form-control" name="npm" rows="8" cols="80" placeholder="ex:11115442,50414925"></textarea>
             <br>
             <label class="" for="">Masukkan Password SCP : </label>
             <br>

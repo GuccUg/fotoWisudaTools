@@ -13,10 +13,17 @@
         <a class="btn btn-primary" href="/fotograyscale">Checker and Grayscale</a>
         <a style="" class="btn btn-warning" href="/matcher">Count And List Missing</a>
         <a style="" class="btn btn-success" href="/datadbf">Data DBF Getter</a>
+        <a class="btn btn-primary" href="/ssdownloader">Foto Downloader</a>
       </div>
       <div class="row">
         <h1 class="page-header">Count And List Missing Foto<small> by c3budiman</small></h1>
+        @php
+          $pengaturan = DB::table('folder')->where('id','=','1')->get()->first();
+        @endphp
+        <p>Folder Yang Fotonya akan di cek : </p>
+        <input type="text" name="" disabled class="form-control" value="{{public_path($pengaturan->FolderAsal)}}">
       </div>
+      <hr>
       <div class="row">
         <div class="col-md-12">
           <form class="" action="{{url(action('direktoriController@matcher'))}}" method="post">

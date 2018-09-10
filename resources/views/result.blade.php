@@ -20,15 +20,6 @@
         if ($npmDicari == "") {
           continue;
         }
-        $url = "http://".$npmDicari.".student.gunadarma.ac.id/tugas.html";
-    		$ch = curl_init();
-    		curl_setopt($ch, CURLOPT_URL, $url);
-    		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    		$response = curl_exec($ch);
-    		if (curl_errno($ch)) die(curl_error($ch));
-    		curl_close($ch);
-    		$re = '/<tr><td><i><b>Email<\/b><\/td><td>:(.*)\[/m';
-    		preg_match_all($re, $response, $matches, PREG_SET_ORDER, 0);
         ?>
         <tr>
           <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->NPM}}</td>
@@ -46,9 +37,25 @@
           @if (DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->EMAIL != '')
             <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->EMAIL}}</td>
           @else
-            <td>{{substr($matches[0][1],1,strlen($matches[0][1])-2)."@student.gunadarma.ac.id"}}</td>
+            <?php
+            $url = "http://".$npmDicari.".student.gunadarma.ac.id/tugas.html";
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            $re = '/<tr><td><i><b>Email<\/b><\/td><td>:(.*)\[/m';
+            preg_match_all($re, $response, $matches, PREG_SET_ORDER, 0);
+            if (curl_errno($ch))
+             {
+               die(curl_error($ch));
+             } else {
+               ?>
+               <td>{{substr($matches[0][1],1,strlen($matches[0][1])-2)."@student.gunadarma.ac.id"}}</td>
+               <?php
+             }
+            curl_close($ch);
+             ?>
           @endif
-
         </tr>
         <?php
       }
