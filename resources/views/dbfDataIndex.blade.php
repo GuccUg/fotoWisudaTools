@@ -242,8 +242,15 @@
           <div class="col-md-3">
             Data S1-Sistem Informasi :
           </div>
-          <div class="col-md-6">
+          <div class="col-md-1">
             {{DB::table('dbf2')->where('JURUSAN','=','S1-Sistem Informasi')->get()->count()}}
+          </div>
+
+          <div class="col-md-3">
+            Data yang fotonya ga ada :
+          </div>
+          <div class="col-md-1">
+            <a href="/downloadcsvygkurang" class="btn btn-success">Download</a>
           </div>
         </div>
 

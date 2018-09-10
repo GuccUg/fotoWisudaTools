@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Exception;
 use DB;
 use App\Folder;
+use Excel;
+use Carbon\Carbon;
 
 class direktoriController extends Controller
 {
@@ -314,5 +316,29 @@ class direktoriController extends Controller
       $folder->PasswordSCP = $request->password;
       $folder->save();
       return redirect('pengaturan');
+    }
+
+    public function getYangNoFoto() {
+      $dataNPM = DB::table('dbf2')->get()->pluck('NPM')->toArray();
+      $pengaturan = DB::table('folder')->where('id','=','1')->get()->first();
+      //yg perlu di edit -> $dirfotonya = folder asal foto
+      //$dirResult = folder dimana menyimpan hasil itemin
+      $dirfotonya = public_path($pengaturan->FolderAsal);
+      $fotoArray = array_diff(scandir($dirfotonya), array('..', '.'));
+      $dataGaAdaFoto = array();
+      foreach ($dataNPM as $npm) {
+        if (in_array($npm.'.jpg', $fotoArray)) {
+
+        } else {
+          array_push($dataGaAdaFoto, $npm);
+        }
+      }
+
+      Excel::create('Missing Foto', function($excel) use ($dataGaAdaFoto) {
+      $excel->sheet('Missing Foto', function($sheet) use ($dataGaAdaFoto) {
+          $sheet->loadView('result')->with('npmArray',$dataGaAdaFoto);
+          });
+      })->download('xls');;
+
     }
 }
