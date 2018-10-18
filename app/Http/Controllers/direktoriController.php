@@ -27,7 +27,14 @@ class direktoriController extends Controller
 
       foreach ($fotoArray as $foto) {
         foreach ($npmArray as $npm) {
-          $npmfoto = str_replace(".jpg","",$foto);
+          $arbfoto = explode(".",$foto);
+          $ext = end($arbfoto);
+          if ($ext == 'jpg') {
+            $npmfoto = str_replace(".jpg","",$foto);
+          } else {
+            $npmfoto = str_replace(".JPG","",$foto);
+          }
+
           if ($npmfoto === $npm) {
             // echo "Ketemu ". $npm."<br>";
             $fotoKetemu = $dirfotonya . "/" . $foto;
@@ -273,7 +280,7 @@ class direktoriController extends Controller
        $fotoArray = scandir($dirfotonya);
        $npmDicari = $request->npm;
        $npmArray = explode(",",$npmDicari);
-       $npmfoto = str_replace(".jpg","",$fotoArray);
+       $npmfoto = str_replace(array(".jpg",".JPG"),"",$fotoArray);
        $fotoArray = "";
        $npmYangGaada = array_diff($npmArray, $npmfoto);
        foreach ($npmYangGaada as $npm) {
@@ -307,6 +314,36 @@ class direktoriController extends Controller
       return view('pengaturan', ['pengaturan'=>$pengaturan]);
     }
 
+    public function checkerIndex() {
+      return view('checkerIndex');
+    }
+
+    public function get_duplicates( $array ) {
+        return array_unique( array_diff_assoc( $array, array_unique( $array ) ) );
+    }
+
+    public function checker(Request $request) {
+        $npmDicari = $request->npm;
+        $npmArray = explode(",",$npmDicari);
+        $dataNPM = DB::table('dbf2')->where('JURUSAN','=','S1-Teknik Industri')
+                   ->orWhere('JURUSAN','=','S1-Teknik Elektro')
+                   ->orWhere('JURUSAN','=','S1-Teknik Mesin')
+                   ->orWhere('JURUSAN','=','S1-Teknik Informatika')
+                   ->pluck('NPM')
+                   ->toArray();
+        $datagaada = array_diff($npmArray, $dataNPM);
+        //dd($this->get_duplicates($npmArray));
+        dd($datagaada);
+        //$this->array_has_dupes($npmArray);
+
+        // $fotoArray2 = "";
+        // foreach ($datagaada as $npm) {
+        //   $fotoArray2 .= $npm.',';
+        // }
+        // echo "<h1> foto yg tidak ditemukan : ".count($datagaada)." </h1>";
+        // echo '<textarea class="form-control" name="npm" rows="8" cols="80">'.$fotoArray2.'</textarea>';
+    }
+
     public function UpdatePengaturan(Request $request) {
       $folder = Folder::find(1);
       $folder->FolderAsal = $request->FolderAsal;
@@ -326,19 +363,23 @@ class direktoriController extends Controller
       $dirfotonya = public_path($pengaturan->FolderAsal);
       $fotoArray = array_diff(scandir($dirfotonya), array('..', '.'));
       $dataGaAdaFoto = array();
+      $fotoArray2 = "";
       foreach ($dataNPM as $npm) {
-        if (in_array($npm.'.jpg', $fotoArray)) {
+        if (in_array($npm.'.jpg', $fotoArray) || in_array($npm.'.JPG', $fotoArray)) {
 
         } else {
+          $fotoArray2 = $fotoArray2 . "," . $npm;
           array_push($dataGaAdaFoto, $npm);
         }
       }
 
-      Excel::create('Missing Foto', function($excel) use ($dataGaAdaFoto) {
-      $excel->sheet('Missing Foto', function($sheet) use ($dataGaAdaFoto) {
-          $sheet->loadView('result')->with('npmArray',$dataGaAdaFoto);
-          });
-      })->download('xls');;
+      // Excel::create('Missing Foto', function($excel) use ($dataGaAdaFoto) {
+      // $excel->sheet('Missing Foto', function($sheet) use ($dataGaAdaFoto) {
+      //     $sheet->loadView('result')->with('npmArray',$dataGaAdaFoto);
+      //     });
+      // })->download('xls');;
 
+      echo "<h1> foto yg tidak ditemukan : ".count($dataGaAdaFoto)." </h1>";
+      echo '<textarea class="form-control" name="npm" rows="8" cols="80">'.$fotoArray2.'</textarea>';
     }
 }

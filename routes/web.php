@@ -16,6 +16,9 @@ Route::post('/fotograyscale', 'direktoriController@proses');
 Route::get('/matcher','direktoriController@matcherIndex');
 Route::post('/matcher', 'direktoriController@matcher');
 
+Route::get('checker','direktoriController@checkerIndex');
+Route::post('checker', 'direktoriController@checker');
+
 //langsung grayscale foto dalam suatu direktori
 Route::get('/proses', 'direktoriController@proseslangsung');
 

@@ -226,14 +226,25 @@
           </div>
           <div class="col-md-1">
             @php
+            $dataNPM = DB::table('dbf2')->get()->pluck('NPM')->toArray();
             $pengaturan = DB::table('folder')->where('id','=','1')->get()->first();
+            //yg perlu di edit -> $dirfotonya = folder asal foto
+            //$dirResult = folder dimana menyimpan hasil itemin
             $dirfotonya = public_path($pengaturan->FolderAsal);
-            $scanned_directory = array_diff(scandir($dirfotonya), array('..', '.'));//to remove dots
-            $x = count($scanned_directory);
-            $jumlah = DB::table('dbf2')->get()->count()
+            $fotoArray = array_diff(scandir($dirfotonya), array('..', '.'));
+            $dataGaAdaFoto = array();
+            $fotoArray2 = "";
+            foreach ($dataNPM as $npm) {
+              if (in_array($npm.'.jpg', $fotoArray) || in_array($npm.'.JPG', $fotoArray) ) {
+
+              } else {
+                $fotoArray2 = $fotoArray2 . "," . $npm;
+                array_push($dataGaAdaFoto, $npm);
+              }
+            }
             @endphp
             {{
-              $jumlah - $x
+              count($dataGaAdaFoto)
             }}
           </div>
         </div>
