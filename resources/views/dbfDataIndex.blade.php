@@ -12,6 +12,7 @@
         <a style="" href="/" class="btn btn-info">Home</a>
         <a class="btn btn-primary" href="/fotograyscale">Checker and Grayscale</a>
         <a style="" class="btn btn-warning" href="/matcher">Count And List Missing</a>
+        <a style="" class="btn btn-primary" href="/perjurusan">Data Perjurusan</a>
         <a style="" class="btn btn-success" href="/datadbf">Data DBF Getter</a>
         <a class="btn btn-primary" href="/ssdownloader">Foto Downloader</a>
       </div>
@@ -145,8 +146,14 @@
           <div class="col-md-3">
             Data S1-Teknik Arsitektur :
           </div>
-          <div class="col-md-6">
+          <div class="col-md-1">
             {{DB::table('dbf2')->where('JURUSAN','=','S1-Teknik Arsitektur')->get()->count()}}
+          </div>
+          <div class="col-md-3">
+            Data Semua S1 :
+          </div>
+          <div class="col-md-1">
+            {{DB::table('dbf2')->where('JURUSAN','like','S1-%')->get()->count()}}
           </div>
         </div>
 
@@ -158,12 +165,6 @@
             {{DB::table('dbf2')->where('JURUSAN','=','S1-Teknik Elektro')->get()->count()}}
           </div>
 
-          <div class="col-md-3">
-            Data Semua Mahasiswa :
-          </div>
-          <div class="col-md-1">
-            {{DB::table('dbf2')->get()->count()}}
-          </div>
         </div>
 
         <div class="row">
@@ -173,8 +174,51 @@
           <div class="col-md-1">
             {{DB::table('dbf2')->where('JURUSAN','=','S1-Teknik Mesin')->get()->count()}}
           </div>
+
           <div class="col-md-3">
-            Data D3 :
+            Data D3TI :
+          </div>
+
+          <div class="col-md-1">
+            {{
+              DB::table('dbf2')->where('JURUSAN','=','D3-Manajemen Informatika')->get()->count()
+              + DB::table('dbf2')->where('JURUSAN','=','D3-Teknik Komputer')->get()->count()
+            }}
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            Data S1-Manajemen :
+          </div>
+          <div class="col-md-1">
+            {{DB::table('dbf2')->where('JURUSAN','=','S1-Manajemen')->get()->count()}}
+          </div>
+          <div class="col-md-3">
+            Data D3BK :
+          </div>
+
+          <div class="col-md-1">
+            {{
+              DB::table('dbf2')->where('JURUSAN','=','D3-Akuntansi')->get()->count()
+              + DB::table('dbf2')->where('JURUSAN','=','D3-Manajemen Pemasaran')->get()->count()
+              + DB::table('dbf2')->where('JURUSAN','=','D3-Manajemen Keuangan')->get()->count()
+            }}
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            Data S1-Psikologi :
+          </div>
+          <div class="col-md-1">
+            {{DB::table('dbf2')->where('JURUSAN','=','S1-Psikologi')->get()->count()}}
+          </div>
+
+          <div class="col-md-3">
+            Data Semua D3 :
           </div>
           <div class="col-md-1">
             {{
@@ -189,10 +233,34 @@
 
         <div class="row">
           <div class="col-md-3">
-            Data S1-Manajemen :
+            Data S1-Sistem Informasi :
           </div>
           <div class="col-md-1">
-            {{DB::table('dbf2')->where('JURUSAN','=','S1-Manajemen')->get()->count()}}
+            {{DB::table('dbf2')->where('JURUSAN','=','S1-Sistem Informasi')->get()->count()}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            Data S1-Sastra Inggris :
+          </div>
+          <div class="col-md-1">
+            {{DB::table('dbf2')->where('JURUSAN','=','S1-Sastra Inggris')->get()->count()}}
+          </div>
+          <div class="col-md-3">
+            Data Semua Mahasiswa :
+          </div>
+          <div class="col-md-1">
+            {{DB::table('dbf2')->get()->count()}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            Data S1-Teknik Informatika :
+          </div>
+          <div class="col-md-1">
+            {{DB::table('dbf2')->where('JURUSAN','=','S1-Teknik Informatika')->get()->count()}}
           </div>
 
           <div class="col-md-3">
@@ -210,15 +278,14 @@
               $x
             }}
           </div>
-
         </div>
 
         <div class="row">
           <div class="col-md-3">
-            Data S1-Psikologi :
+            Data S1-Sistem Komputer :
           </div>
           <div class="col-md-1">
-            {{DB::table('dbf2')->where('JURUSAN','=','S1-Psikologi')->get()->count()}}
+            {{DB::table('dbf2')->where('JURUSAN','=','S1-Sistem Komputer')->get()->count()}}
           </div>
 
           <div class="col-md-3">
@@ -251,10 +318,10 @@
 
         <div class="row">
           <div class="col-md-3">
-            Data S1-Sistem Informasi :
+            Data S1-Ilmu Komunikasi :
           </div>
           <div class="col-md-1">
-            {{DB::table('dbf2')->where('JURUSAN','=','S1-Sistem Informasi')->get()->count()}}
+            {{DB::table('dbf2')->where('JURUSAN','=','S1-Ilmu Komunikasi')->get()->count()}}
           </div>
 
           <div class="col-md-3">
@@ -262,42 +329,6 @@
           </div>
           <div class="col-md-1">
             <a href="/downloadcsvygkurang" class="btn btn-success">Download</a>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-3">
-            Data S1-Sastra Inggris :
-          </div>
-          <div class="col-md-6">
-            {{DB::table('dbf2')->where('JURUSAN','=','S1-Sastra Inggris')->get()->count()}}
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-3">
-            Data S1-Teknik Informatika :
-          </div>
-          <div class="col-md-6">
-            {{DB::table('dbf2')->where('JURUSAN','=','S1-Teknik Informatika')->get()->count()}}
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-3">
-            Data S1-Sistem Komputer :
-          </div>
-          <div class="col-md-6">
-            {{DB::table('dbf2')->where('JURUSAN','=','S1-Sistem Komputer')->get()->count()}}
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-3">
-            Data S1-Ilmu Komunikasi :
-          </div>
-          <div class="col-md-6">
-            {{DB::table('dbf2')->where('JURUSAN','=','S1-Ilmu Komunikasi')->get()->count()}}
           </div>
         </div>
 

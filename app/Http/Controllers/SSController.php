@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use DB;
 use phpseclib\Net\SSH2;
 use phpseclib\Net\SCP;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Dbf;
 use Redirect;
+use App\Imports\dbfImport;
+use App\Exports\dbfExport;
 
 class SSController extends Controller
 {
@@ -72,31 +74,33 @@ class SSController extends Controller
       if($request->file('imported-file'))
       {
           $path = $request->file('imported-file')->getRealPath();
-          $data = Excel::load($path, function($reader) {
-      })->get();
-      if(!empty($data) && $data->count())
-      {
-        $data = $data->toArray();
-        // for($i=0;$i<count($data);$i++)
-        // dd(array_chunk($data,1000));
-        $datachunk = array_chunk($data,1000);
-        foreach ($datachunk as $datanya) {
-          for($i=0;$i<count($datanya);$i++)
-          {
-            $dataImported[] = $datanya[$i];
-          }
-        }
-      }
-      // dd($dataImported);
-      try {
-          $dataImported2 = array_chunk($dataImported,1000);
-          foreach ($dataImported2 as $datakecil) {
-            Dbf::insert($datakecil);
-          }
+          //$data = Excel::load($path, function($reader) { })->get();
+          Excel::import(new dbfImport, $request->file('imported-file'));
           return back()->with('status', 'Berhasil dimasukan Ke Database');
-      } catch(\Exception $e){
-          return Redirect::back()->withErrors([$e.' terdapat kesalahan format file, pastikan format file sudah benar!']);
-      }
+        //   Excel::import(new UsersImport, request()->file('your_file'));
+        // if(!empty($data) && $data->count())
+        // {
+        //   $data = $data->toArray();
+        //   // for($i=0;$i<count($data);$i++)
+        //   // dd(array_chunk($data,1000));
+        //   $datachunk = array_chunk($data,1000);
+        //   foreach ($datachunk as $datanya) {
+        //     for($i=0;$i<count($datanya);$i++)
+        //     {
+        //       $dataImported[] = $datanya[$i];
+        //     }
+        //   }
+        // }
+        // // dd($dataImported);
+        // try {
+        //     $dataImported2 = array_chunk($dataImported,1000);
+        //     foreach ($dataImported2 as $datakecil) {
+        //       Dbf::insert($datakecil);
+        //     }
+        //     return back()->with('status', 'Berhasil dimasukan Ke Database');
+        // } catch(\Exception $e){
+        //     return Redirect::back()->withErrors([$e.' terdapat kesalahan format file, pastikan format file sudah benar!']);
+        // }
       }
       return Redirect::back()->withErrors(['terdapat kesalahan, pastikan format file sudah benar!']);
     }
@@ -188,6 +192,7 @@ class SSController extends Controller
     public function export(Request $request){
       $npmRequest = $request->npm;
       $npmArray = explode(",",$npmRequest);
-      Excel::loadView('result', array('npmArray' => $npmArray))->export('xls');
+      return Excel::download(new dbfExport($npmArray), 'datawisuda.xlsx');
+      //Excel::loadView('result', array('npmArray' => $npmArray))->export('xls');
     }
 }

@@ -1,3 +1,38 @@
+<?php use Carbon\Carbon; ?>
+<?php
+function replacealamat($string) {
+  $arr = array();
+
+  $arr = explode(" ",$string);
+  $tea = '';
+  $teb = '';
+  $final2 = '';
+  $final = '';
+
+  foreach($arr as $ar) {
+    $tea .= $ar." ";
+    if(strlen($tea) > 30)
+    {
+        $final = str_replace($ar,null,$tea);
+      break;
+    }
+  }
+
+  foreach($arr as $ar) {
+    $teb .= $ar." ";
+    if(strlen($teb) > 30)
+    {
+      $final2 .= $ar." ";
+    }
+  }
+  $final = rtrim($final," ");
+  $final2 = rtrim($final2," ");
+
+  $hasil = array('a' => $final, 'b' => $final2);
+
+  return $hasil;
+}
+ ?>
     <table>
       <tr>
         <td>NPM</td>
@@ -14,54 +49,40 @@
         <td>TELEPON</td>
         <td>EMAIL</td>
       </tr>
-      <?php
-      use Carbon\Carbon;
-      foreach ($npmArray as $npmDicari) {
-        if ($npmDicari == "") {
-          continue;
-        }
-        ?>
+
+      @foreach ($data as $dt)
         <tr>
-          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->NPM}}</td>
-          <td>{{ucwords(strtolower(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->NAMA))}}</td>
-          <td>{{Carbon::parse(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->TGL_LULUS)->format('d/m/Y')}}</td>
-          <td>{{Carbon::parse(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->TGL_LAHIR)->format('d/m/Y')}}</td>
-          <td>{{ucfirst(strtolower(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->TEMPAT_LAHIR))}}</td>
-          <td>{{strtolower(substr(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->JALAN,0,30))}}</td>
-          <td>{{strtolower(substr(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->JALAN,30))}}</td>
-          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->RT}}</td>
-          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->RW}}</td>
-          <td>{{ucfirst(strtolower(DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->KOTA))}}</td>
-          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->KODEPOS}}</td>
-          <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->HP}}</td>
-          @if (DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->EMAIL != '')
-            <td>{{DB::table('dbf2')->where('NPM','=',$npmDicari)->get()->first()->EMAIL}}</td>
+          <td>{{$dt->NPM}}</td>
+          <td>{{ucwords(strtolower($dt->NAMA))}}</td>
+          <td>{{Carbon::parse($dt->TGL_LULUS)->format('d/m/Y')}}</td>
+          <td>{{Carbon::parse($dt->TGL_LAHIR)->format('d/m/Y')}}</td>
+          <td>{{ucfirst(strtolower($dt->TEMPAT_LAHIR))}}</td>
+
+          <?php
+          $jalan = strtolower($dt->JALAN);
+          if (strlen($jalan)>30) {
+            $jalan = replacealamat(strtolower($dt->JALAN));
+          }
+           ?>
+
+          @if (is_array($jalan))
+            <td>{{$jalan['a']}}</td>
+            <td>{{$jalan['b']}}</td>
           @else
-            <?php
-            $url = "http://".$npmDicari.".student.gunadarma.ac.id/tugas.html";
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            $re = '/<tr><td><i><b>Email<\/b><\/td><td>:(.*)\[/m';
-            preg_match_all($re, $response, $matches, PREG_SET_ORDER, 0);
-            if (curl_errno($ch))
-             {
-               die(curl_error($ch));
-             } else {
-               ?>
-               @if (empty($matches))
-                 <td></td>
-               @else
-                 <td>{{substr($matches[0][1],1,strlen($matches[0][1])-2)."@student.gunadarma.ac.id"}}</td>
-               @endif
-               <?php
-             }
-            curl_close($ch);
-             ?>
+            <td>{{$jalan}}</td>
+            <td></td>
+          @endif
+
+          <td>{{$dt->RT}}</td>
+          <td>{{$dt->RW}}</td>
+          <td>{{ucfirst(strtolower($dt->KOTA))}}</td>
+          <td>{{$dt->KODEPOS}}</td>
+          <td>{{$dt->HP}}</td>
+          @if ($dt->EMAIL != '')
+            <td>{{$dt->EMAIL}}</td>
+          @else
+            <td></td>
           @endif
         </tr>
-        <?php
-      }
-       ?>
+      @endforeach
     </table>

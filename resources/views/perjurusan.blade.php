@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <title>Foto Wisuda Tools by c3budiman</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script type="text/javascript" src="/js/jquery.min.js">
+
+    </script>
   </head>
   <body>
 
@@ -16,29 +19,23 @@
         <a style="" class="btn btn-success" href="/datadbf">Data DBF Getter</a>
         <a class="btn btn-primary" href="/ssdownloader">Foto Downloader</a>
       </div>
-      <div class="row">
-        <h1 class="page-header">Foto Grayscale And Resize <small>by c3budiman</small></h1>
-        @php
-          $pengaturan = DB::table('folder')->where('id','=','1')->get()->first();
-        @endphp
-        <p>Folder Yang Fotonya akan di grayscale : </p>
-        <input type="text" name="" disabled class="form-control" value="{{public_path($pengaturan->FolderAsal)}}">
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-md-12">
-          <form class="" action="{{url(action('direktoriController@proses'))}}" method="post">
-            {{ csrf_field() }}
-            <label class="" for="">Masukkan list npm yg ingin di grayscale. pisahkan dengan koma ex : (111,222)</label>
-            <br>
-            <textarea class="form-control" name="npm" rows="8" cols="80"></textarea>
-            <br>
-            <input class="btn btn-info" type="submit" name="submit" value="submit">
-          </form>
-        </div>
-      </div>
-    </div>
 
+      <div class="row">
+        <h1 class="page-header">Download Data Per Jurusan <small>by c3budiman</small></h1>
+        <br>
+        @foreach ($data_jurusan as $jurusan)
+          <form class="" action="/downloadjurusan" method="post">
+            <div style="margin-top:20px;" class="col-md-4">
+              {{ csrf_field() }}
+              <input type="hidden" name="jurusan" value="{{$jurusan['JURUSAN']}}">
+              <button type="submit" class="btn btn-success" name="button">Data {{$jurusan['JURUSAN']}}</button>
+            </div>
+          </form>
+
+        @endforeach
+      </div>
+
+    </div>
 
   </body>
 </html>

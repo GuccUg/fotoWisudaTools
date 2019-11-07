@@ -23,6 +23,8 @@
           <br>
           <a style="margin-top:10px;" class="btn btn-block btn-success" href="/datadbf">Data DBF Getter</a>
           <br>
+          <a style="margin-top:10px;" class="btn btn-block btn-primary" href="/perjurusan">Download Excel Perjurusan</a>
+          <br>
           <div class="col-md-9 pull-right">
             <a style="margin-top:40px;" class="btn btn-warning pull-right" href="/pengaturan"><i class="fa fa-gear"></i> Pengaturan Folder</a>
             <a style="margin-top:40px; margin-right:20px;" class="btn btn-info pull-right" href="/transpose"><i class="fa fa-gear"></i> Transpose CSV</a>

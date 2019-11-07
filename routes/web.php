@@ -38,6 +38,9 @@ Route::post('csv', 'SSController@import');
 
 Route::get('resize', 'SSController@resize');
 
+Route::get('perjurusan', 'DBFController@getperjurusan');
+Route::post('downloadjurusan', 'DBFController@DownloadDataJurusan');
+
 Route::get('tes', function(){
   $output = shell_exec('scp -P 143 student@studentsite.gunadarma.ac.id:/home/student/foto/11115442.jpg ./foto2013');
   return "<pre>$output</pre>";

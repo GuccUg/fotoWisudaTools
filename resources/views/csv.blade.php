@@ -12,6 +12,7 @@
         <a style="" href="/" class="btn btn-info">Home</a>
         <a class="btn btn-primary" href="/fotograyscale">Checker and Grayscale</a>
         <a style="" class="btn btn-warning" href="/matcher">Count And List Missing</a>
+        <a style="" class="btn btn-primary" href="/perjurusan">Data Perjurusan</a>
         <a style="" class="btn btn-success" href="/datadbf">Data DBF Getter</a>
         <a class="btn btn-primary" href="/ssdownloader">Foto Downloader</a>
       </div>
@@ -38,7 +39,7 @@
             {{ csrf_field() }}
             <label for="">Masukkan File Csv yang telah kau convert dari dbf : </label>
             <br>
-            <input type="file" name="imported-file" accept=".csv">
+            <input type="file" name="imported-file">
             <br>
             <input class="btn btn-info" type="submit" name="submit" value="upload">
           </form>
